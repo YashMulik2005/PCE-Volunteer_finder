@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEnvelope, FaLock, FaBuilding, FaPhone } from "react-icons/fa";
 import { useNavigate } from "react-router";
+import toast from "react-hot-toast";
 
 function OrganizationSignup() {
   const {

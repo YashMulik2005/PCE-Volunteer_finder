@@ -1,6 +1,6 @@
 import React from "react";
 import authHook, { AuthProvider } from "./context/AuthContext";
-import { createBrowserRouter, RouterProvider } from "react-router";
+import { createBrowserRouter, RouterProvider, Navigate } from "react-router";
 import Layout from "./pages/HomePage/Layout";
 import TypeSelect from "./pages/Auth/TypeSelect";
 import VolunteerLogin from "./pages/Auth/VolunteerLogin";
@@ -11,6 +11,10 @@ import Homepage from "./pages/Volunteer/Homepage";
 import AuthLayout from "./pages/Auth/AuthLayout";
 import { Toaster } from "react-hot-toast";
 import OrgHomePage from "./pages/Organization/OrgHomePage";
+import EventDeatils from "./pages/Volunteer/EventDeatils";
+import OrgLayout from "./pages/Organization/OrgLayout";
+import OrgEvents from "./pages/Organization/OrgEvents";
+import EventVolunteers from "./pages/Organization/EventVolunteers";
 
 function App() {
   const { token, userdata } = authHook();
@@ -24,7 +28,7 @@ function App() {
       element: isVolunteer ? (
         <Homepage />
       ) : isOrganization ? (
-        <OrgHomePage />
+        <Navigate to="/organization" replace />
       ) : (
         <Layout />
       ),
@@ -52,6 +56,36 @@ function App() {
         {
           path: "organizationsignup",
           element: <OrganizationSignup />,
+        },
+      ],
+    },
+    {
+      path: "/volunteer",
+      element: <Homepage />,
+    },
+    {
+      path: "/event/:id",
+      element: <EventDeatils />,
+    },
+    {
+      path: "/organization",
+      element: <OrgLayout />,
+      children: [
+        {
+          index: true,
+          element: <OrgHomePage />,
+        },
+        {
+          path: "homepage",
+          element: <OrgHomePage />,
+        },
+        {
+          path: "events",
+          element: <OrgEvents />,
+        },
+        {
+          path: "events/:id/volunteers",
+          element: <EventVolunteers />,
         },
       ],
     },

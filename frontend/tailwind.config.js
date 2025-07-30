@@ -13,6 +13,12 @@ export default {
           light: "#DDEB9D",
           base: "#A0C878",
         },
+
+        main_blue: "#399efc",
+        dark_blue: "#1f184a",
+        light_blue: "#e1f1ff",
+        shadow: "#f1f1f1",
+        off_white: "#fafcfe",
       },
     },
   },

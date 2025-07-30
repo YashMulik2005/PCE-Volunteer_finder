@@ -7,6 +7,13 @@ export const AuthProvider = ({ children }) => {
   const [token, settoken] = useState(null);
   const [userdata, setuserdata] = useState(null);
 
+  const logout = () => {
+    Cookies.remove("token");
+    Cookies.remove("user_data");
+    settoken(null);
+    setuserdata(null);
+  };
+
   useEffect(() => {
     const savedToken = Cookies.get("token");
     const savedUserdata = Cookies.get("user_data");
@@ -27,6 +34,7 @@ export const AuthProvider = ({ children }) => {
     settoken,
     userdata,
     setuserdata,
+    logout,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

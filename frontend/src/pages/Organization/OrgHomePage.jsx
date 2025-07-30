@@ -1,7 +1,7 @@
 import React from "react";
 
 function OrgHomePage() {
-  return <div>OrgHomePage</div>;
+  return <div>org name</div>;
 }
 
 export default OrgHomePage;
