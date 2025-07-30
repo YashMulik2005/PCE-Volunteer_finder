@@ -10,10 +10,12 @@ const addEvent = async (req, res) => {
       duration,
       volunteersRequired,
     } = req.body;
+    // console.log(req.user);
+
     const event = new Event({
       title,
       description,
-      organization: req.user.id,
+      organization: req.user.orgId,
       location,
       eventDate,
       duration,
@@ -29,7 +31,10 @@ const addEvent = async (req, res) => {
 const getEvents = async (req, res) => {
   try {
     const events = await Event.find().populate("organization");
-    res.status(200).json(events);
+    res.status(200).json({
+      status: true,
+      data: events,
+    });
   } catch (err) {
     res
       .status(500)
@@ -39,11 +44,17 @@ const getEvents = async (req, res) => {
 
 const getEventById = async (req, res) => {
   try {
-    const event = await Event.findById(req.params.id).populate("organization");
+    const event = await Event.findById(req.params.id).populate(
+      "organization",
+      "org_name mail mobile_no"
+    );
     if (!event) {
       return res.status(404).json({ message: "Event not found" });
     }
-    res.status(200).json(event);
+    res.status(200).json({
+      status: true,
+      data: event,
+    });
   } catch (err) {
     res
       .status(500)
@@ -57,11 +68,13 @@ const getEventsByOrganizationId = async (req, res) => {
     const events = await Event.find({ organization: orgId }).populate(
       "organization"
     );
-    res.status(200).json(events);
+    res.status(200).json({ status: true, data: events });
   } catch (err) {
-    res
-      .status(500)
-      .json({ message: "Error fetching events", error: err.message });
+    res.status(500).json({
+      status: false,
+      message: "Error fetching events",
+      error: err.message,
+    });
   }
 };
 
