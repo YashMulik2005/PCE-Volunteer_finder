@@ -61,14 +61,14 @@ function EventDeatils() {
   }, []);
 
   return (
-    <div className="bg-[#fafafa] w-full h-screen flex flex-col">
+    <div className="bg-[#f6f6f6] w-full h-screen flex flex-col">
       <div className="h-12 shadow-md">
         <VolunteerNavbar />
       </div>
 
-      <div className="w-full flex-grow overflow-y-auto flex flex-col items-center bg-[#fafafa]">
+      <div className="w-full flex-grow overflow-y-auto flex flex-col items-center bg-[#f6f6f6]">
         <div className=" px-3 text-xs sm:text-sm sm:px-24 w-full mt-5">
-          <div className="bg-white rounded-md flex p-4 justify-between items-center">
+          <div className="bg-white bg-[radial-gradient(circle_at_top_left,_#e8f4f8,_#ffffff)] rounded-md flex p-4 justify-between items-center">
             <div className="flex gap-4">
               <div className="w-14 h-14">
                 <div className="rounded-full h-full w-full bg-[#047294] flex justify-center items-center">
@@ -101,7 +101,7 @@ function EventDeatils() {
           </div>
         </div>
 
-        <div className="bg-white w-full flex p-7 rounded gap-6 mt-5">
+        <div className="bg-white  w-full flex p-7 rounded gap-6 mt-5">
           <div className="w-[70%] flex flex-col gap-4">
             <div>
               <h1 className="text-lg font-bold">Title</h1>
@@ -112,9 +112,25 @@ function EventDeatils() {
               <p className="text-gray-600 mt-1">{data?.description}</p>
             </div>
             <div>
+              <h1 className="text-lg font-bold">Type</h1>
+              <p className="text-gray-600 mt-1">{data?.type}</p>
+            </div>
+            <div>
               <h1 className="text-lg font-bold">Event Date</h1>
               <p className="text-gray-600 mt-1">
                 {moment(data?.eventDate).format("MMMM Do YYYY")}
+              </p>
+            </div>
+            <div>
+              <h1 className="text-lg font-bold">Event Time</h1>
+              <p className="bg-gray-100 inline rounded-3xl mt-1 px-4 text-sm font-semibold py-1 text-[#047294]">
+                {data?.eventTime}
+              </p>
+            </div>
+            <div>
+              <h1 className="text-lg font-bold">Registration Deadline</h1>
+              <p className="text-gray-600 mt-1">
+                {moment(data?.registrationDeadline).format("MMMM Do YYYY")}
               </p>
             </div>
             <div>
@@ -144,6 +160,21 @@ function EventDeatils() {
               <p className="text-gray-600">
                 <span className="font-bold text-[#45849b]">Pincode:</span>{" "}
                 {data?.location?.pincode}
+              </p>
+            </section>
+            <section className="my-2 pb-4 border-b-[1px] border-gray-300">
+              <h1 className="font-bold mb-2">Contact :</h1>
+              <p className="text-gray-600">
+                <span className="font-bold text-[#45849b]">Name:</span>{" "}
+                {data?.contact?.name}
+              </p>
+              <p className="text-gray-600">
+                <span className="font-bold text-[#45849b]">Email:</span>{" "}
+                {data?.contact?.email}
+              </p>
+              <p className="text-gray-600">
+                <span className="font-bold text-[#45849b]">Phone:</span>{" "}
+                {data?.contact?.phone}
               </p>
             </section>
             <section className="my-2">

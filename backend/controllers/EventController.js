@@ -7,10 +7,13 @@ const addEvent = async (req, res) => {
       description,
       location,
       eventDate,
+      eventTime,
       duration,
       volunteersRequired,
+      registrationDeadline,
+      contact,
+      type,
     } = req.body;
-    // console.log(req.user);
 
     const event = new Event({
       title,
@@ -18,9 +21,14 @@ const addEvent = async (req, res) => {
       organization: req.user.orgId,
       location,
       eventDate,
+      eventTime,
       duration,
       volunteersRequired,
+      registrationDeadline,
+      contact,
+      type,
     });
+
     await event.save();
     res.status(201).json(event);
   } catch (err) {

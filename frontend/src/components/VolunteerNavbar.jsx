@@ -14,7 +14,7 @@ function VolunteerNavbar() {
   };
 
   return (
-    <div className="w-full h-12 flex justify-between items-center bg-[#f6f6f6] px-6 shadow-md relative">
+    <div className="w-full h-12 flex justify-between items-center bg-white px-6 shadow-md relative">
       <h1 className="font-semibold text-lg">Website Name</h1>
       <section className="flex items-center gap-2 cursor-pointer relative">
         <div className="rounded-full h-7 w-7 bg-[#047294]"></div>

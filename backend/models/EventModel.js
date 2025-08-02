@@ -36,6 +36,30 @@ const eventSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  eventTime: {
+    type: String,
+    required: true,
+  },
+  registrationDeadline: {
+    type: Date,
+    required: true,
+  },
+  contact: {
+    type: Object,
+    required: true,
+  },
+  type: {
+    type: String,
+    enum: [
+      "Fundraiser",
+      "Clean-up",
+      "Workshop",
+      "Campaign",
+      "Awareness Drive",
+      "Other",
+    ],
+    default: "Other",
+  },
   createdAt: {
     type: Date,
     default: Date.now,
