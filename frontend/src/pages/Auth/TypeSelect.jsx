@@ -9,8 +9,8 @@ function TypeSelect() {
       <div className=" w-full h-[8%]">
         <Navbar />
       </div>
-      <div className=" flex flex-row justify-between items-center w-full h-[92%] py-2">
-        <div className=" flex flex-col items-center justify-between h-full w-1/2 p-3">
+      <div className=" flex flex-col sm:flex-row justify-between items-center w-full h-[92%] py-2">
+        <div className=" flex flex-col items-center justify-between h-full w-full sm:w-1/2 p-3 border-b sm:border-b-0">
           <section>
             <h1 className=" text-center text-3xl font-bold mb-2">
               For Organization
@@ -23,7 +23,7 @@ function TypeSelect() {
           </section>
           <button
             onClick={() => navigate("/auth/organizationlogin")}
-            className=" rounded bg-[#45849b] hover:bg-[#047294] text-white py-3 px-6 font-semibold hover:bg-dark_blue cursor-pointer hover:shadow-[0_8px_20px_rgba(0,0,0,0.25)]"
+            className=" rounded bg-[#45849b]  text-white py-3 px-6 font-semibold hover:bg-dark_blue cursor-pointer hover:shadow-[0_8px_20px_rgba(0,0,0,0.25)]"
           >
             Login
           </button>
@@ -37,7 +37,7 @@ function TypeSelect() {
             </p>
           </section>
         </div>
-        <div className=" flex flex-col items-center justify-between h-full w-1/2 p-3 border-l-[1px] border-gray-200">
+        <div className=" flex flex-col items-center justify-between h-full w-full sm:w-1/2 p-3 sm:border-l-[1px] border-gray-200">
           <section>
             <h1 className=" text-center text-3xl font-bold mb-2 ">
               For Volunteer
@@ -50,7 +50,7 @@ function TypeSelect() {
           </section>
           <button
             onClick={() => navigate("/auth/volunteerlogin")}
-            className=" rounded bg-[#45849b] hover:bg-[#047294] text-white py-3 px-6 font-semibold hover:bg-dark_blue cursor-pointer hover:shadow-[0_8px_20px_rgba(0,0,0,0.25)]"
+            className=" rounded bg-[#45849b]  text-white py-3 px-6 font-semibold hover:bg-dark_blue cursor-pointer hover:shadow-[0_8px_20px_rgba(0,0,0,0.25)]"
           >
             Login
           </button>

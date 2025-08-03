@@ -70,11 +70,13 @@ function EventDeatils() {
 
       <div className="w-full flex-grow overflow-y-auto flex flex-col items-center bg-[#f6f6f6]">
         <div className=" px-3 text-xs sm:text-sm sm:px-24 w-full mt-5">
-          <div className="bg-white bg-[radial-gradient(circle_at_top_left,_#e8f4f8,_#ffffff)] rounded-md flex p-4 justify-between items-center">
-            <div className="flex gap-4">
-              <div className="w-14 h-14">
+          <div className="bg-white bg-[radial-gradient(circle_at_top_left,_#e8f4f8,_#ffffff)] rounded-md flex flex-col sm:flex-row gap-2 p-4 justify-between sm:items-center">
+            <div className="flex gap-4 items-center">
+              <div className="sm:w-14 sm:h-14 w-10 h-10">
                 <div className="rounded-full h-full w-full bg-[#047294] flex justify-center items-center">
-                  <ImOffice color="white" size={25} />
+                  <div className="text-[15px] sm:text-[25px] text-white">
+                    <ImOffice />
+                  </div>
                 </div>
               </div>
               <div>
@@ -96,15 +98,15 @@ function EventDeatils() {
 
             <button
               onClick={() => modalRef.current.showModal()}
-              className="bg-[#047294] px-4 py-2 h-8 flex items-center text-sm font-bold text-white rounded"
+              className="bg-[#047294] px-4 w-20  py-2 h-8 flex items-center justify-center text-sm font-bold text-white rounded"
             >
               Apply
             </button>
           </div>
         </div>
 
-        <div className="bg-white  w-full flex p-7 rounded gap-6 mt-5">
-          <div className="w-[70%] flex flex-col gap-4">
+        <div className="bg-white  w-full flex flex-col sm:flex-row p-7 rounded gap-6 mt-5">
+          <div className=" w-full sm:w-[70%] flex flex-col gap-4 border-b sm:border-b-0 pb-3 sm:pb-0 ">
             <div>
               <h1 className="text-lg font-bold">Title</h1>
               <p className="text-gray-600 mt-1">{data?.title}</p>
@@ -147,7 +149,7 @@ function EventDeatils() {
             </div>
           </div>
 
-          <div className="w-[30%] border-l-[1px] border-gray-300 p-3">
+          <div className=" w-full  sm:w-[30%] sm:border-l-[1px] border-gray-300 sm:p-3">
             <section className="pb-4 border-b-[1px] border-gray-300">
               <h1 className="font-bold">Address :</h1>
               <p className="text-gray-600">{data?.location?.address}</p>
