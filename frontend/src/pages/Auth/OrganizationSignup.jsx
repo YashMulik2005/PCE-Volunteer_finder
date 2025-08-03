@@ -20,7 +20,7 @@ function OrganizationSignup() {
     setloader(true);
     try {
       const res = await axios.post(
-        "http://localhost:3000/api/organizations/signup",
+        `${import.meta.env.VITE_API_BASE_URL}organizations/signup`,
         {
           org_name: data.organizationName,
           mail: data.email,

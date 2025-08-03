@@ -24,7 +24,7 @@ function OrganizationLogin() {
     try {
       console.log("Form submitted:", data);
       const res = await axios.post(
-        "http://localhost:3000/api/organizations/login",
+        `${import.meta.env.VITE_API_BASE_URL}organizations/login`,
         {
           mail: data.email,
           password: data.password,

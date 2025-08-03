@@ -19,11 +19,14 @@ function VolunteerSignup() {
   const onSubmit = async (data) => {
     setloader(true);
     try {
-      const res = await axios.post("http://localhost:3000/api/users/signup", {
-        email: data.email,
-        password: data.password,
-        name: data.name,
-      });
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}users/signup`,
+        {
+          email: data.email,
+          password: data.password,
+          name: data.name,
+        }
+      );
 
       if (res?.data?.status) {
         navigate("/auth/volunteerlogin");

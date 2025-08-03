@@ -13,7 +13,9 @@ function EventVolunteers() {
   const { token } = authHook();
 
   const getData = async () => {
-    const res = await axios.get(`http://localhost:3000/api/events/${id}`);
+    const res = await axios.get(
+      `${import.meta.env.VITE_API_BASE_URL}events/${id}`
+    );
     const result = res.data;
 
     setdata(result?.data);
@@ -21,7 +23,7 @@ function EventVolunteers() {
 
   const getApplicationData = async () => {
     const res = await axios.get(
-      `http://localhost:3000/api/applications/event/${id}`
+      `${import.meta.env.VITE_API_BASE_URL}applications/event/${id}`
     );
     const result = res.data;
     setapplicationData(result);
@@ -32,7 +34,7 @@ function EventVolunteers() {
       console.log(token, "token");
 
       const res = await axios.put(
-        `http://localhost:3000/api/applications/status/${id}`,
+        `${import.meta.env.VITE_API_BASE_URL}applications/status/${id}`,
         { status },
         {
           headers: {
