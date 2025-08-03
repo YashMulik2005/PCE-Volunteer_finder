@@ -14,7 +14,7 @@ function Homepage() {
   const [data, setdata] = useState([]);
 
   const getdata = async () => {
-    const res = await axios.get("${import.meta.env.VITE_API_BASE_URL}events");
+    const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}events`);
     const result = res.data;
     console.log(result?.data);
 

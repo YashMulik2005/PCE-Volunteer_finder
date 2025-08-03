@@ -29,7 +29,7 @@ function AddEvent() {
   const onSubmit = async (data) => {
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}events/add`,
+        `${import.meta.env.VITE_BACKEND_URL}events/add`,
         {
           title: data.title,
           description: data.description,

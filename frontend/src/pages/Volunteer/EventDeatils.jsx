@@ -27,7 +27,7 @@ function EventDeatils() {
   const onSubmit = async (data) => {
     console.log("Form Data:", data);
     const res = await axios.post(
-      `${import.meta.env.VITE_API_BASE_URL}applications/add`,
+      `${import.meta.env.VITE_BACKEND_URL}applications/add`,
       {
         event_id: id,
         name: data?.name,
@@ -50,7 +50,7 @@ function EventDeatils() {
 
   const getData = async () => {
     const res = await axios.get(
-      `${import.meta.env.VITE_API_BASE_URL}events/${id}`
+      `${import.meta.env.VITE_BACKEND_URL}events/${id}`
     );
     const result = res.data;
     console.log(result?.data);

@@ -12,7 +12,7 @@ function OrgEvents() {
   const fetchEvents = async () => {
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}events/organization/${userdata.id}`
+        `${import.meta.env.VITE_BACKEND_URL}events/organization/${userdata.id}`
       );
       const result = res.data;
       console.log(result?.data, "response");

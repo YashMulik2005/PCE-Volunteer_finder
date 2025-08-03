@@ -20,7 +20,7 @@ function VolunteerSignup() {
     setloader(true);
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}users/signup`,
+        `${import.meta.env.VITE_BACKEND_URL}users/signup`,
         {
           email: data.email,
           password: data.password,
