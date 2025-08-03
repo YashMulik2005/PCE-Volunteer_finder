@@ -19,7 +19,12 @@ function OrganizationNavbar() {
     <div className=" flex flex-col h-screen justify-between p-3">
       <div className=" flex flex-col space-y-1">
         <h1 className=" text-xl font-bold text-[#047294] my-3">SITE NAME</h1>
-        <section className=" text-gray-600 text-sm flex gap-1 items-center font-semibold hover:bg-[#047294] hover:text-white p-1.5 rounded">
+        <section
+          onClick={() => {
+            navigate("/organization");
+          }}
+          className=" text-gray-600 text-sm flex gap-1 items-center font-semibold hover:bg-[#047294] hover:text-white p-1.5 rounded"
+        >
           <RiDashboardFill /> <p>Dashboard</p>
         </section>
         <section
@@ -31,7 +36,10 @@ function OrganizationNavbar() {
           <BsCalendarEventFill />
           <p>Events</p>
         </section>
-        <section className=" text-gray-600 text-sm flex gap-1 items-baseline font-semibold hover:bg-[#047294] hover:text-white p-1.5 rounded">
+        <section
+          onClick={() => navigate("/organization/events/add")}
+          className=" text-gray-600 text-sm flex gap-1 items-baseline font-semibold hover:bg-[#047294] hover:text-white p-1.5 rounded"
+        >
           <IoMdAddCircle />
           <p>Add events</p>
         </section>

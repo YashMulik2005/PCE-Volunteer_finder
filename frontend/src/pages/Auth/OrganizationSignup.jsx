@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { FaEnvelope, FaLock, FaBuilding, FaPhone } from "react-icons/fa";
 import { useNavigate } from "react-router";
 import toast from "react-hot-toast";
+import { PropagateLoader } from "react-spinners";
 
 function OrganizationSignup() {
   const {
@@ -13,21 +14,35 @@ function OrganizationSignup() {
   } = useForm();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [loader, setloader] = useState(false);
 
   const onSubmit = async (data) => {
-    const res = await axios.post(
-      "http://localhost:3000/api/organizations/signup",
-      {
-        org_name: data.organizationName,
-        mail: data.email,
-        password: data.password,
-        mobile_no: data.mobile,
-      }
-    );
+    setloader(true);
+    try {
+      const res = await axios.post(
+        "http://localhost:3000/api/organizations/signup",
+        {
+          org_name: data.organizationName,
+          mail: data.email,
+          password: data.password,
+          mobile_no: data.mobile,
+        }
+      );
 
-    if (res?.data?.status) {
-      navigate("/auth/organizationlogin");
-      toast.success("Signup sucessfully.");
+      if (res?.data?.status) {
+        navigate("/auth/organizationlogin");
+        toast.success("Signup sucessfully.");
+        setloader(false);
+      }
+    } catch (err) {
+      const errorMessage =
+        err?.response?.data?.message ||
+        err?.response?.data?.error ||
+        "Login failed. Please try again.";
+
+      toast.error(errorMessage);
+      console.error("Login error:", err);
+      setloader(false);
     }
   };
 
@@ -40,6 +55,12 @@ function OrganizationSignup() {
             Sign up to access your organization dashboard.
           </p>
         </div>
+
+        {loader && (
+          <div className="flex justify-center items-center">
+            <PropagateLoader color="#003840" size={15} />
+          </div>
+        )}
 
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
           {/* Organization Name */}
@@ -186,7 +207,10 @@ function OrganizationSignup() {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-[#003840] hover:bg-[#002b31] text-white font-medium py-2 rounded-md"
+            disabled={loader}
+            className={`w-full bg-[#003840] hover:bg-[#002b31] text-white font-medium py-2 rounded-md flex items-center justify-center h-10 ${
+              loader ? "opacity-80 cursor-not-allowed" : ""
+            }`}
           >
             Sign Up
           </button>

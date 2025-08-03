@@ -11,7 +11,7 @@ function OrgEventCard({ data }) {
       onClick={() => {
         navigate(`/organization/events/${data?._id}/volunteers`);
       }}
-      className=" bg-white shadow p-4 rounded flex flex-col gap-2 cursor-pointer"
+      className=" bg-white shadow flex flex-col gap-2 bg-[radial-gradient(circle_at_top_left,_#e8f4f8,_#ffffff)] hover:scale-[1.00] transition-transform duration-200 ease-in-out p-4 rounded hover:shadow-md cursor-pointer"
     >
       <div className=" flex gap-3 items-center">
         <div className="">
@@ -27,7 +27,9 @@ function OrgEventCard({ data }) {
         </div>
       </div>
       <div>
-        <p className=" text-gray-600 text-sm">{data?.description}</p>
+        <p className=" text-gray-600 text-sm line-clamp-3">
+          {data?.description}
+        </p>
       </div>
       <div>
         <p className=" text-gray-600 text-sm">

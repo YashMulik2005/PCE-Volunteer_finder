@@ -15,6 +15,7 @@ import EventDeatils from "./pages/Volunteer/EventDeatils";
 import OrgLayout from "./pages/Organization/OrgLayout";
 import OrgEvents from "./pages/Organization/OrgEvents";
 import EventVolunteers from "./pages/Organization/EventVolunteers";
+import AddEvent from "./pages/Organization/AddEvent";
 
 function App() {
   const { token, userdata } = authHook();
@@ -86,6 +87,10 @@ function App() {
         {
           path: "events/:id/volunteers",
           element: <EventVolunteers />,
+        },
+        {
+          path: "events/add",
+          element: <AddEvent />,
         },
       ],
     },

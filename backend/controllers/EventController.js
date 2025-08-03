@@ -30,9 +30,15 @@ const addEvent = async (req, res) => {
     });
 
     await event.save();
-    res.status(201).json(event);
+    res
+      .status(201)
+      .json({ status: true, data: event, message: "Event added sucessfully." });
   } catch (err) {
-    res.status(400).json({ message: "Error adding event", error: err.message });
+    res.status(400).json({
+      status: false,
+      message: "Error adding event",
+      error: err.message,
+    });
   }
 };
 

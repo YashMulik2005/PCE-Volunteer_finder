@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEnvelope, FaLock } from "react-icons/fa";
 import { useNavigate } from "react-router";
@@ -6,6 +6,7 @@ import Cookies from "js-cookie";
 import authHook from "../../context/AuthContext";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { PropagateLoader } from "react-spinners";
 
 function OrganizationLogin() {
   const {
@@ -16,8 +17,10 @@ function OrganizationLogin() {
 
   const navigate = useNavigate();
   const { settoken, setuserdata } = authHook();
+  const [loader, setloader] = useState(false);
 
   const onSubmit = async (data) => {
+    setloader(true);
     try {
       console.log("Form submitted:", data);
       const res = await axios.post(
@@ -39,6 +42,7 @@ function OrganizationLogin() {
       setuserdata(result?.organization);
       toast.success("login successful.");
       navigate("/");
+      setloader(false);
     } catch (err) {
       const errorMessage =
         err?.response?.data?.message ||
@@ -47,6 +51,7 @@ function OrganizationLogin() {
 
       toast.error(errorMessage);
       console.error("Login error:", err);
+      setloader(false);
     }
   };
   return (
@@ -69,6 +74,12 @@ function OrganizationLogin() {
             process.
           </p>
         </div>
+
+        {loader && (
+          <div className="flex justify-center items-center">
+            <PropagateLoader color="#003840" size={15} />
+          </div>
+        )}
 
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
           <div>
@@ -147,7 +158,10 @@ function OrganizationLogin() {
 
           <button
             type="submit"
-            className="w-full bg-[#003840] hover:bg-[#002b31] text-white font-medium py-2 rounded-md"
+            disabled={loader}
+            className={`w-full bg-[#003840] hover:bg-[#002b31] text-white font-medium py-2 rounded-md flex items-center justify-center h-10 ${
+              loader ? "opacity-80 cursor-not-allowed" : ""
+            }`}
           >
             Sign In
           </button>

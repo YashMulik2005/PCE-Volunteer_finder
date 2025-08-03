@@ -1,11 +1,12 @@
 import axios from "axios";
-import React from "react";
-import { useForm } from "react-hook-form";
+import React, { useState } from "react";
+import { set, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { FaEnvelope, FaLock } from "react-icons/fa";
 import { useNavigate } from "react-router";
 import Cookies from "js-cookie";
 import authHook from "../../context/AuthContext";
+import { PropagateLoader } from "react-spinners";
 
 function VolunteerLogin() {
   const {
@@ -16,8 +17,10 @@ function VolunteerLogin() {
 
   const navigate = useNavigate();
   const { settoken, setuserdata } = authHook();
+  const [loader, setloader] = useState(false);
 
   const onSubmit = async (data) => {
+    setloader(true);
     try {
       const res = await axios.post("http://localhost:3000/api/users/login", {
         email: data.email,
@@ -35,6 +38,7 @@ function VolunteerLogin() {
       settoken(result?.token);
       setuserdata(result?.user);
       toast.success("login successful.");
+      setloader(false);
       navigate("/");
     } catch (err) {
       const errorMessage =
@@ -43,7 +47,7 @@ function VolunteerLogin() {
         "Login failed. Please try again.";
 
       toast.error(errorMessage);
-      console.error("Login error:", err);
+      setloader(false);
     }
   };
 
@@ -67,6 +71,12 @@ function VolunteerLogin() {
             process.
           </p>
         </div>
+
+        {loader && (
+          <div className="flex justify-center items-center">
+            <PropagateLoader color="#003840" size={15} />
+          </div>
+        )}
 
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
           <div>
@@ -145,8 +155,18 @@ function VolunteerLogin() {
 
           <button
             type="submit"
-            className="w-full bg-[#003840] hover:bg-[#002b31] text-white font-medium py-2 rounded-md"
+            disabled={loader}
+            className={`w-full bg-[#003840] hover:bg-[#002b31] text-white font-medium py-2 rounded-md flex items-center justify-center h-10 ${
+              loader ? "opacity-80 cursor-not-allowed" : ""
+            }`}
           >
+            {/* {loader ? (
+              <div className="flex justify-center items-center h-full">
+                <PropagateLoader color="#ffffff" size={10} />
+              </div>
+            ) : (
+              "Sign In"
+            )} */}
             Sign In
           </button>
         </form>

@@ -46,7 +46,7 @@ function Home() {
         </div>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-10 px-6 sm:px-16 py-12 items-center">
+      <div className="grid md:grid-cols-2 gap-10 px-6 sm:px-16 py-12 sm:py-20 items-center">
         <div className="flex gap-4 flex-wrap justify-center md:justify-start">
           <div className="relative w-60 h-96 rounded-lg overflow-hidden shadow-md">
             <img
@@ -106,7 +106,7 @@ function Home() {
           </button>
         </div>
       </div>
-      <div className="grid md:grid-cols-2 gap-10 px-6 sm:px-16 py-12 items-center bg-[radial-gradient(circle_at_center,_#04687f,_#035466)]">
+      <div className="grid md:grid-cols-2 gap-10 px-6 sm:px-16 py-12 sm:py-20 items-center bg-[radial-gradient(circle_at_center,_#04687f,_#035466)]">
         <div className="space-y-3">
           <p className="text-white font-semibold flex gap-2 items-center">
             <span>

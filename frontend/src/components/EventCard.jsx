@@ -25,10 +25,10 @@ function EventCard({ data }) {
         </div>
       </div>
 
-      <p className="text-gray-700 text-sm">{data?.description}</p>
+      <p className="text-gray-700 text-sm line-clamp-3">{data?.description}</p>
 
       <p className="text-sm text-gray-700">
-        <span className="font-bold text-[#45849b]">Date:</span>{" "}
+        <span className="font-bold text-[#45849b]">Event Date:</span>{" "}
         {moment(data?.eventDate).format("MMMM Do YYYY")}
       </p>
     </div>

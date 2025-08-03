@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEnvelope, FaLock, FaUser } from "react-icons/fa";
 import { useNavigate } from "react-router";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { PropagateLoader } from "react-spinners";
 
 function VolunteerSignup() {
   const {
@@ -13,19 +14,30 @@ function VolunteerSignup() {
   } = useForm();
 
   const navigate = useNavigate();
+  const [loader, setloader] = useState(false);
 
   const onSubmit = async (data) => {
-    console.log("Form submitted:", data);
-    // Handle signup logic here
-    const res = await axios.post("http://localhost:3000/api/users/signup", {
-      email: data.email,
-      password: data.password,
-      name: data.name,
-    });
+    setloader(true);
+    try {
+      const res = await axios.post("http://localhost:3000/api/users/signup", {
+        email: data.email,
+        password: data.password,
+        name: data.name,
+      });
 
-    if (res?.data?.status) {
-      navigate("/auth/volunteerlogin");
-      toast.success("Signup sucessfully.");
+      if (res?.data?.status) {
+        navigate("/auth/volunteerlogin");
+        toast.success("Signup sucessfully.");
+        setloader(false);
+      }
+    } catch (err) {
+      const errorMessage =
+        err?.response?.data?.message ||
+        err?.response?.data?.error ||
+        "Login failed. Please try again.";
+
+      toast.error(errorMessage);
+      setloader(false);
     }
   };
 
@@ -39,6 +51,12 @@ function VolunteerSignup() {
             process.
           </p>
         </div>
+
+        {loader && (
+          <div className="flex justify-center items-center">
+            <PropagateLoader color="#003840" size={15} />
+          </div>
+        )}
 
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
           <div>
@@ -144,7 +162,10 @@ function VolunteerSignup() {
           {/* Submit */}
           <button
             type="submit"
-            className="w-full bg-[#003840] hover:bg-[#002b31] text-white font-medium py-2 rounded-md"
+            disabled={loader}
+            className={`w-full bg-[#003840] hover:bg-[#002b31] text-white font-medium py-2 rounded-md flex items-center justify-center h-10 ${
+              loader ? "opacity-80 cursor-not-allowed" : ""
+            }`}
           >
             Sign Up
           </button>

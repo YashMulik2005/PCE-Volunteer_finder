@@ -70,13 +70,13 @@ function EventVolunteers() {
       <div className="w-full flex-grow overflow-y-auto flex flex-col items-center p-3 ">
         <div className=" px-3 text-xs sm:text-sm sm:px-20 w-full mt-5">
           <div className=" bg-white rounded-md flex p-4 justify-between items-center">
-            <div className="flex gap-4">
+            <div className="flex gap-4 items-center">
               <div className="w-14 h-14">
                 <div className="rounded-full h-full w-full bg-[#047294] flex justify-center items-center">
                   <ImOffice color="white" size={25} />
                 </div>
               </div>
-              <div>
+              <div className=" w-[90%]">
                 <h1 className=" text-lg font-semibold text-[#047294]">
                   {data?.title}
                 </h1>
