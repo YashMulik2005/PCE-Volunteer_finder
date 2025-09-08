@@ -9,9 +9,11 @@ import authHook from "../../context/AuthContext";
 import moment from "moment";
 import defaultProfile from "../../assets/default_profile_img.png";
 import { FaCamera } from "react-icons/fa";
+import ProfileSkeleton from "../../skeleton/ProfileSkeleton";
 
 function Profile() {
   const [userdata, setuserdata] = useState();
+  const [loding, setloding] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -25,6 +27,7 @@ function Profile() {
   const { token, logout } = authHook();
 
   const getUserData = async () => {
+    setloding(true);
     try {
       const res = await axios.get(
         `${import.meta.env.VITE_BACKEND_URL}users/profile`,
@@ -47,6 +50,7 @@ function Profile() {
     } catch (err) {
       console.error(err);
     }
+    setloding(false);
   };
 
   useEffect(() => {
@@ -164,93 +168,97 @@ function Profile() {
           </ul>
         </div>
 
-        <div className="overflow-y-auto w-[85%] h-full px-5 bg-[#f6f6f6] p-4">
-          <div className="relative bg-white flex gap-5 p-5 px-8">
-            <div className="relative w-44 h-44">
-              <img
-                src={userdata?.profileImage || defaultProfile}
-                alt="Profile"
-                className="w-44 h-44 object-cover"
-              />
+        {loding ? (
+          <ProfileSkeleton />
+        ) : (
+          <div className="overflow-y-auto w-[85%] h-full px-5 bg-[#f6f6f6] p-4">
+            <div className="relative bg-white flex gap-5 p-5 px-8">
+              <div className="relative w-44 h-44">
+                <img
+                  src={userdata?.profileImage || defaultProfile}
+                  alt="Profile"
+                  className="w-44 h-44 object-cover"
+                />
 
-              {/* Camera Button */}
-              <label
-                htmlFor="profileImageUpload"
-                className="absolute bottom-1 right-1 bg-white shadow-md rounded-full p-2 cursor-pointer hover:bg-gray-100"
-              >
-                <FaCamera size={20} className="text-gray-700" />
-              </label>
+                {/* Camera Button */}
+                <label
+                  htmlFor="profileImageUpload"
+                  className="absolute bottom-1 right-1 bg-white shadow-md rounded-full p-2 cursor-pointer hover:bg-gray-100"
+                >
+                  <FaCamera size={20} className="text-gray-700" />
+                </label>
 
-              {/* Hidden File Input */}
-              <input
-                id="profileImageUpload"
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={onImageChange}
-              />
-            </div>
+                {/* Hidden File Input */}
+                <input
+                  id="profileImageUpload"
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={onImageChange}
+                />
+              </div>
 
-            <div className="flex flex-col gap-2 justify-center">
-              <p>
-                <span className="font-semibold">Name: </span>
-                {userdata?.name}
-              </p>
-              <p>
-                <span className="font-semibold">Email: </span>
-                {userdata?.email}
-              </p>
-              <p>
-                <span className="font-semibold">No of events applied: </span>3
-              </p>
-              <p>
-                <span className="font-semibold">Created At: </span>
-                {moment(userdata?.createdAt).format("MMMM Do YYYY")}
-              </p>
+              <div className="flex flex-col gap-2 justify-center">
+                <p>
+                  <span className="font-semibold">Name: </span>
+                  {userdata?.name}
+                </p>
+                <p>
+                  <span className="font-semibold">Email: </span>
+                  {userdata?.email}
+                </p>
+                <p>
+                  <span className="font-semibold">No of events applied: </span>3
+                </p>
+                <p>
+                  <span className="font-semibold">Created At: </span>
+                  {moment(userdata?.createdAt).format("MMMM Do YYYY")}
+                </p>
+                <button
+                  onClick={handleLogout}
+                  className=" bg-red-600 text-white text-sm font-semibold rounded-3xl px-2 py-1.5 w-20"
+                >
+                  Logout
+                </button>
+              </div>
+
               <button
-                onClick={handleLogout}
-                className=" bg-red-600 text-white text-sm font-semibold rounded-3xl px-2 py-1.5 w-20"
+                className="btn absolute top-4 right-4 text-sm"
+                onClick={() =>
+                  document.getElementById("edit_profile_modal").showModal()
+                }
               >
-                Logout
+                Edit Profile
               </button>
             </div>
 
-            <button
-              className="btn absolute top-4 right-4 text-sm"
-              onClick={() =>
-                document.getElementById("edit_profile_modal").showModal()
-              }
-            >
-              Edit Profile
-            </button>
-          </div>
-
-          <div className=" bg-white mt-4 p-5 px-8">
-            <h2 className="text-lg font-semibold mb-4">
-              Additional Information
-            </h2>
-            <div className="flex flex-col gap-2">
-              <p>
-                <span className="font-semibold">Phone: </span>
-                {userdata?.phone || "-"}
-              </p>
-              <p>
-                <span className="font-semibold">Gender: </span>
-                {userdata?.gender || "-"}
-              </p>
-              <p>
-                <span className="font-semibold">Date of Birth: </span>
-                {userdata?.dob
-                  ? moment(userdata.dob).format("YYYY-MM-DD")
-                  : "-"}
-              </p>
-              <p>
-                <span className="font-semibold">Address: </span>
-                {userdata?.address || "-"}
-              </p>
+            <div className=" bg-white mt-4 p-5 px-8">
+              <h2 className="text-lg font-semibold mb-4">
+                Additional Information
+              </h2>
+              <div className="flex flex-col gap-2">
+                <p>
+                  <span className="font-semibold">Phone: </span>
+                  {userdata?.phone || "-"}
+                </p>
+                <p>
+                  <span className="font-semibold">Gender: </span>
+                  {userdata?.gender || "-"}
+                </p>
+                <p>
+                  <span className="font-semibold">Date of Birth: </span>
+                  {userdata?.dob
+                    ? moment(userdata.dob).format("YYYY-MM-DD")
+                    : "-"}
+                </p>
+                <p>
+                  <span className="font-semibold">Address: </span>
+                  {userdata?.address || "-"}
+                </p>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
 
       <dialog id="edit_profile_modal" className="modal">

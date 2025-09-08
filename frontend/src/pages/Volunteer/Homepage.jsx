@@ -12,6 +12,7 @@ import { MdEventNote } from "react-icons/md";
 import { IoDocumentText } from "react-icons/io5";
 import { ImProfile } from "react-icons/im";
 import { useNavigate } from "react-router";
+import EventCardSkeleton from "../../skeleton/EventCardSkeleton";
 
 function Homepage() {
   const [data, setdata] = useState([]);
@@ -21,11 +22,13 @@ function Homepage() {
   const [loading, setLoading] = useState(false);
 
   const getdata = async () => {
+    setLoading(true);
     const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}events`);
     const result = res.data;
-    console.log(result?.data);
+    // console.log(result?.data);
 
     setdata(result?.data);
+    setLoading(false);
   };
 
   const handleSearch = async () => {
@@ -146,9 +149,13 @@ function Homepage() {
             </button>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-1 gap-4 mt-4">
-            {data?.map((item, index) => {
-              return <EventCard key={index} data={item} />;
-            })}
+            {loading
+              ? Array(4)
+                  .fill(0)
+                  .map((_, i) => <EventCardSkeleton key={i} />)
+              : data?.map((item, index) => (
+                  <EventCard key={index} data={item} />
+                ))}
           </div>
         </div>
       </div>

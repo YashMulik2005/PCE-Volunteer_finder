@@ -4,6 +4,8 @@ import moment from "moment";
 import { useParams } from "react-router";
 import { ImOffice } from "react-icons/im";
 import authHook from "../../context/AuthContext";
+import OrganizationDetailsCardSkeleton from "../../skeleton/OrganizationDetailsCard";
+import OrganizationTableSkeleton from "../../skeleton/OrganizationTableSkeleton";
 
 function EventVolunteers() {
   const [data, setdata] = useState([]);
@@ -11,22 +13,28 @@ function EventVolunteers() {
   const [selectedAppId, setSelectedAppId] = useState(null);
   const { id } = useParams();
   const { token } = authHook();
+  const [loading, setloading] = useState(false);
+  const [applicationLoader, setapplicationLoader] = useState(false);
 
   const getData = async () => {
+    setloading(true);
     const res = await axios.get(
       `${import.meta.env.VITE_BACKEND_URL}events/${id}`
     );
     const result = res.data;
 
     setdata(result?.data);
+    setloading(false);
   };
 
   const getApplicationData = async () => {
+    setapplicationLoader(true);
     const res = await axios.get(
       `${import.meta.env.VITE_BACKEND_URL}applications/event/${id}`
     );
     const result = res.data;
     setapplicationData(result);
+    setapplicationLoader(false);
   };
 
   const handleStatusChange = async (status, id) => {
@@ -70,26 +78,30 @@ function EventVolunteers() {
         </h1>
       </div>
       <div className="w-full flex-grow overflow-y-auto flex flex-col items-center p-3 ">
-        <div className=" px-3 text-xs sm:text-sm sm:px-20 w-full mt-5">
-          <div className=" bg-white rounded-md flex p-4 justify-between items-center">
-            <div className="flex gap-4 items-center">
-              <div className="w-14 h-14">
-                <div className="rounded-full h-full w-full bg-[#047294] flex justify-center items-center">
-                  <ImOffice color="white" size={25} />
+        {loading ? (
+          <OrganizationDetailsCardSkeleton />
+        ) : (
+          <div className=" px-3 text-xs sm:text-sm sm:px-20 w-full mt-5">
+            <div className=" bg-white rounded-md flex p-4 justify-between items-center">
+              <div className="flex gap-4 items-center">
+                <div className="w-14 h-14">
+                  <div className="rounded-full h-full w-full bg-[#047294] flex justify-center items-center">
+                    <ImOffice color="white" size={25} />
+                  </div>
                 </div>
-              </div>
-              <div className=" w-[90%]">
-                <h1 className=" text-lg font-semibold text-[#047294]">
-                  {data?.title}
-                </h1>
-                <p className=" line-clamp-2">{data?.description}</p>
-                <p className=" text-sm text-gray-500">
-                  {moment(data?.eventDate).format("MMMM Do YYYY")}
-                </p>
+                <div className=" w-[90%]">
+                  <h1 className=" text-lg font-semibold text-[#047294]">
+                    {data?.title}
+                  </h1>
+                  <p className=" line-clamp-2">{data?.description}</p>
+                  <p className=" text-sm text-gray-500">
+                    {moment(data?.eventDate).format("MMMM Do YYYY")}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
 
         <div className="mt-6 w-full ">
           <div className="overflow-x-auto rounded-md shadow-md bg-white">
@@ -104,56 +116,60 @@ function EventVolunteers() {
                 </button>
               </div>
             </div>
-            <table className="min-w-full text-sm text-left border-collapse bg-white">
-              <tbody className=" text-gray-500">
-                <tr>
-                  <td className="py-2 px-4">Name</td>
-                  <td className="py-2 px-4">Applied On</td>
-                  <td className="py-2 px-4">Email</td>
-                  <td className="py-2 px-4">Mobile No</td>
-                  <td className="py-2 px-4">Status</td>
-                  <td className="py-2 px-4">Actions</td>
-                </tr>
-              </tbody>
-              <tbody className="text-gray-600 font-semibold">
-                {applicationData?.map((item, index) => (
-                  <tr key={index} className="border-t hover:bg-gray-50">
-                    <td className="py-3 px-4">{item.name}</td>
-                    <td className="py-3 px-4">
-                      {moment(item.createdAt).format("MMMM Do YYYY")}
-                    </td>
-                    <td className="py-3 px-4">{item.mail}</td>
-                    <td className="py-3 px-4">{item.mobile}</td>
-                    <td className="py-3 px-4 capitalize">
-                      {item.status === "approved" ? (
-                        <p className=" bg-green-100 inline rounded-3xl px-4 text-sm font-semibold py-1 text-green-600">
-                          {item.status}
-                        </p>
-                      ) : item.status === "rejected" ? (
-                        <p className="bg-red-100 inline rounded-3xl px-4 text-sm font-semibold py-1 text-red-600">
-                          {item.status}
-                        </p>
-                      ) : (
-                        <p className="bg-gray-100 inline rounded-3xl px-4 text-sm font-semibold py-1 text-[#047294]">
-                          {item.status}
-                        </p>
-                      )}
-                    </td>
-                    <td className="py-3 px-4">
-                      <button
-                        onClick={() => {
-                          setSelectedAppId(item._id);
-                          document.getElementById("my_modal_3").showModal();
-                        }}
-                        className=" bg-[#047294] text-white px-3 py-1 rounded text-xs transition-all duration-200 shadow-lg hover:shadow-xl"
-                      >
-                        View
-                      </button>
-                    </td>
+            {applicationLoader ? (
+              <OrganizationTableSkeleton />
+            ) : (
+              <table className="min-w-full text-sm text-left border-collapse bg-white">
+                <tbody className=" text-gray-500">
+                  <tr>
+                    <td className="py-2 px-4">Name</td>
+                    <td className="py-2 px-4">Applied On</td>
+                    <td className="py-2 px-4">Email</td>
+                    <td className="py-2 px-4">Mobile No</td>
+                    <td className="py-2 px-4">Status</td>
+                    <td className="py-2 px-4">Actions</td>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </tbody>
+                <tbody className="text-gray-600 font-semibold">
+                  {applicationData?.map((item, index) => (
+                    <tr key={index} className="border-t hover:bg-gray-50">
+                      <td className="py-3 px-4">{item.name}</td>
+                      <td className="py-3 px-4">
+                        {moment(item.createdAt).format("MMMM Do YYYY")}
+                      </td>
+                      <td className="py-3 px-4">{item.mail}</td>
+                      <td className="py-3 px-4">{item.mobile}</td>
+                      <td className="py-3 px-4 capitalize">
+                        {item.status === "approved" ? (
+                          <p className=" bg-green-100 inline rounded-3xl px-4 text-sm font-semibold py-1 text-green-600">
+                            {item.status}
+                          </p>
+                        ) : item.status === "rejected" ? (
+                          <p className="bg-red-100 inline rounded-3xl px-4 text-sm font-semibold py-1 text-red-600">
+                            {item.status}
+                          </p>
+                        ) : (
+                          <p className="bg-gray-100 inline rounded-3xl px-4 text-sm font-semibold py-1 text-[#047294]">
+                            {item.status}
+                          </p>
+                        )}
+                      </td>
+                      <td className="py-3 px-4">
+                        <button
+                          onClick={() => {
+                            setSelectedAppId(item._id);
+                            document.getElementById("my_modal_3").showModal();
+                          }}
+                          className=" bg-[#047294] text-white px-3 py-1 rounded text-xs transition-all duration-200 shadow-lg hover:shadow-xl"
+                        >
+                          View
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         </div>
       </div>

@@ -11,14 +11,17 @@ import moment from "moment";
 import { MdEventNote } from "react-icons/md";
 import { FaRegCalendarAlt, FaMobileAlt } from "react-icons/fa";
 import { MdOutlineSettingsApplications } from "react-icons/md";
+import TableSkeleton from "../../skeleton/TableSkeleton";
 
 function MyApplication() {
   const [userdata, setuserdata] = useState();
   const navigate = useNavigate();
   const [selectedState, setselectedState] = useState("all");
   const { token } = authHook();
+  const [loading, setloading] = useState(false);
 
   const getUserData = async () => {
+    setloading(true);
     try {
       const res = await axios.get(
         `${
@@ -38,6 +41,7 @@ function MyApplication() {
     } catch (err) {
       console.error("Error fetching applications:", err);
     }
+    setloading(false);
   };
 
   useEffect(() => {
@@ -164,53 +168,56 @@ function MyApplication() {
             </div>
             {/* Applications Table */}
             <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="text-gray-500 text-sm border-b">
-                    <th className="py-2">#</th>
-                    <th className="py-2">Event Name</th>
-                    <th className="py-2">Event Date</th>
-                    <th className="py-2">Date Applied</th>
-                    <th className="py-2">Your Mobile</th>
-                    <th className="py-2">Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {userdata?.map((app) => (
-                    <tr key={app.id} className="border-b text-sm">
-                      <td className="py-3">{app.id}</td>
-                      <td className="py-3 font-medium text-md">
-                        {app?.event_id?.title}
-                      </td>
-                      <td className="py-3">
-                        <section className="flex items-center gap-2">
-                          <FaRegCalendarAlt className="text-[#047294]" />
-                          <span>
-                            {moment(app?.event_id?.eventDate).format(
-                              "MMMM Do YYYY"
-                            )}
-                          </span>
-                        </section>
-                      </td>
+              {loading ? (
+                <TableSkeleton />
+              ) : (
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="text-gray-500 text-sm border-b">
+                      <th className="py-2">#</th>
+                      <th className="py-2">Event Name</th>
+                      <th className="py-2">Event Date</th>
+                      <th className="py-2">Date Applied</th>
+                      <th className="py-2">Your Mobile</th>
+                      <th className="py-2">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {userdata?.map((app) => (
+                      <tr key={app.id} className="border-b text-sm">
+                        <td className="py-3">{app.id}</td>
+                        <td className="py-3 font-medium text-md">
+                          {app?.event_id?.title}
+                        </td>
+                        <td className="py-3">
+                          <section className="flex items-center gap-2">
+                            <FaRegCalendarAlt className="text-[#047294]" />
+                            <span>
+                              {moment(app?.event_id?.eventDate).format(
+                                "MMMM Do YYYY"
+                              )}
+                            </span>
+                          </section>
+                        </td>
 
-                      <td className="py-3">
-                        <section className="flex items-center gap-2">
-                          <FaRegCalendarAlt className="text-[#047294]" />
-                          <span>
-                            {moment(app.updatedAt).format("MMMM Do YYYY")}
-                          </span>
-                        </section>
-                      </td>
+                        <td className="py-3">
+                          <section className="flex items-center gap-2">
+                            <FaRegCalendarAlt className="text-[#047294]" />
+                            <span>
+                              {moment(app.updatedAt).format("MMMM Do YYYY")}
+                            </span>
+                          </section>
+                        </td>
 
-                      <td className="py-3">
-                        <section className="flex items-center gap-2">
-                          <FaMobileAlt className="text-[#047294]" />
-                          <span>{app.mobile}</span>
-                        </section>
-                      </td>
-                      <td className="py-3">
-                        <span
-                          className={`px-3 py-1 capitalize rounded-full text-xs font-medium 
+                        <td className="py-3">
+                          <section className="flex items-center gap-2">
+                            <FaMobileAlt className="text-[#047294]" />
+                            <span>{app.mobile}</span>
+                          </section>
+                        </td>
+                        <td className="py-3">
+                          <span
+                            className={`px-3 py-1 capitalize rounded-full text-xs font-medium 
                               ${
                                 app.status === "approved"
                                   ? "bg-green-100 text-green-700"
@@ -218,14 +225,15 @@ function MyApplication() {
                                   ? "bg-red-100 text-red-700"
                                   : "bg-yellow-100 text-yellow-700"
                               }`}
-                        >
-                          {app.status}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                          >
+                            {app.status}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
             </div>
             {/* Pagination
             <div className="flex justify-center gap-2 mt-6">
