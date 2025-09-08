@@ -92,9 +92,47 @@ const getEventsByOrganizationId = async (req, res) => {
   }
 };
 
+const searchEvents = async (req, res) => {
+  try {
+    const { title, location } = req.query;
+
+    let query = {};
+
+    if (title) {
+      query.title = { $regex: title, $options: "i" };
+    }
+
+    if (location) {
+      query.$or = [
+        { "location.address": { $regex: location, $options: "i" } },
+        { "location.city": { $regex: location, $options: "i" } },
+        { "location.state": { $regex: location, $options: "i" } },
+        { "location.pincode": { $regex: location, $options: "i" } },
+      ];
+    }
+
+    const events = await Event.find(query).populate(
+      "organization",
+      "org_name mail mobile_no"
+    );
+
+    res.status(200).json({
+      status: true,
+      data: events,
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: false,
+      message: "Error searching events",
+      error: err.message,
+    });
+  }
+};
+
 module.exports = {
   addEvent,
   getEvents,
   getEventById,
   getEventsByOrganizationId,
+  searchEvents,
 };

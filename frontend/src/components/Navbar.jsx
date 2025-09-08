@@ -1,11 +1,16 @@
 import React from "react";
 import { useNavigate } from "react-router";
+// import { FaHandshakeSimple } from "react-icons/fa6";
+import { GiShakingHands } from "react-icons/gi";
 
 function Navbar() {
   const navigate = useNavigate();
   return (
     <div className=" flex justify-between items-center bg-transparent px-4 py-1 h-full w-full">
-      <h1 className=" font-semibold text-white">Site Name</h1>
+      <section className=" font-semibold text-white flex gap-1 items-center">
+        <GiShakingHands size={20} />
+        <p>FindMyVolunteer</p>
+      </section>
 
       <button
         onClick={() => navigate("/auth/type")}

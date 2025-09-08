@@ -21,8 +21,8 @@ const eventSchema = new mongoose.Schema({
     state: { type: String },
     pincode: { type: String },
     coordinates: {
-      lat: Number,
-      lng: Number,
+      lat: String,
+      lng: String,
     },
   },
   eventDate: {

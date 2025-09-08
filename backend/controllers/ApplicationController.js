@@ -85,9 +85,39 @@ const updateApplicationStatus = async (req, res) => {
   }
 };
 
+const getApplicationByUserId = async (req, res) => {
+  try {
+    const user_id = req.user.id;
+    const { status } = req.query;
+    let filter = { user_id };
+
+    if (status && status !== "all") {
+      filter.status = status;
+    }
+
+    const applications = await Application.find(filter).populate(
+      "event_id",
+      "title eventDate"
+    );
+
+    return res.status(200).json({
+      status: true,
+      message: "Applications data fetched successfully.",
+      data: applications,
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: false,
+      message: "Error while fetching applications.",
+      error: err.message,
+    });
+  }
+};
+
 module.exports = {
   addApplication,
   getApplicationById,
   getApplicationsByEventId,
   updateApplicationStatus,
+  getApplicationByUserId,
 };

@@ -22,9 +22,45 @@ function AddEvent() {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
+    getValues,
   } = useForm();
   const { token } = authHook();
   const navigate = useNavigate();
+
+  const fetchCoordinates = async () => {
+    try {
+      const address = getValues("address") || "";
+      const city = getValues("city") || "";
+      const state = getValues("state") || "";
+      const pincode = getValues("pincode") || "";
+
+      const fullAddress = `${address}, ${city}, ${state}, ${pincode}, India`;
+      if (!fullAddress.trim()) {
+        toast.error("Please enter address details first.");
+        return;
+      }
+
+      const apiKey = "95902c715dc643b0889465bcf24d0775";
+      const res = await axios.get(
+        `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(
+          fullAddress
+        )}&key=${apiKey}&countrycode=in&limit=1`
+      );
+
+      if (res.data.results.length > 0) {
+        const { lat, lng } = res.data.results[0].geometry;
+        setValue("lat", lat);
+        setValue("lng", lng);
+        toast.success("Coordinates fetched successfully!");
+      } else {
+        toast.error("No coordinates found for the given address.");
+      }
+    } catch (err) {
+      toast.error("Error fetching coordinates");
+      console.error(err);
+    }
+  };
 
   const onSubmit = async (data) => {
     try {
@@ -114,7 +150,7 @@ function AddEvent() {
 
   return (
     <div className="bg-[#f6f6f6] h-screen">
-      <div className="bg-white p-4 border-b">
+      <div className="bg-white p-2 border-b">
         <h1 className="text-xl font-semibold text-[#047294]">New Event</h1>
       </div>
 
@@ -166,6 +202,19 @@ function AddEvent() {
               icon: <FaCity className="text-gray-500 mr-2" />,
               placeholder: "Enter pincode",
             })}
+          </div>
+
+          <div className=" flex justify-end">
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                // console.log("fetching lag-long");
+                fetchCoordinates();
+              }}
+              className="bg-[#047294] text-white px-4 py-2 rounded"
+            >
+              <p className=" text-xs font-semibold">Get Latitude & Longitude</p>
+            </button>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
@@ -251,7 +300,6 @@ function AddEvent() {
             })}
           </div>
 
-          {/* Event Type Dropdown */}
           <div>
             <label className="text-sm font-medium text-gray-700 block mb-1">
               Event Type

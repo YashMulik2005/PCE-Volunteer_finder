@@ -16,6 +16,8 @@ import OrgLayout from "./pages/Organization/OrgLayout";
 import OrgEvents from "./pages/Organization/OrgEvents";
 import EventVolunteers from "./pages/Organization/EventVolunteers";
 import AddEvent from "./pages/Organization/AddEvent";
+import MyApplication from "./pages/Volunteer/MyApplication";
+import Profile from "./pages/Volunteer/Profile";
 
 function App() {
   const { token, userdata } = authHook();
@@ -63,6 +65,14 @@ function App() {
     {
       path: "/volunteer",
       element: <Homepage />,
+    },
+    {
+      path: "/volunteer/my-application",
+      element: <MyApplication />,
+    },
+    {
+      path: "/volunteer/profile",
+      element: <Profile />,
     },
     {
       path: "/event/:id",

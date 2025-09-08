@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
   {
+    name: {
+      type: String,
+      required: true,
+    },
     email: {
       type: String,
       required: true,
@@ -11,9 +15,21 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    name: {
+    phone: {
+      type: Number,
+    },
+    gender: {
       type: String,
-      required: true,
+      enum: ["Male", "Female", "Other"],
+    },
+    dob: {
+      type: Date,
+    },
+    profileImage: {
+      type: String,
+    },
+    address: {
+      type: String,
     },
   },
   { timestamps: true }

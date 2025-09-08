@@ -6,7 +6,7 @@ const organizationSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    mail: {
+    email: {
       type: String,
       required: true,
       unique: true,
@@ -15,9 +15,49 @@ const organizationSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    mobile_no: {
-      type: String,
+    phone: {
+      type: Number,
       required: true,
+    },
+    description: {
+      type: String,
+    },
+    social_links: {
+      type: Map, // Object type, can store multiple key-value pairs
+      of: String,
+    },
+    address: {
+      type: String,
+    },
+    org_type: {
+      type: String,
+      enum: [
+        "NGO",
+        "Non-Profit",
+        "Charity",
+        "Trust",
+        "Society",
+        "Foundation",
+        "College",
+        "University",
+        "School",
+        "Club",
+        "Sports Club",
+        "Community Group",
+        "Company",
+        "Startup",
+        "Corporate",
+        "Government",
+        "Municipality",
+        "Research Institute",
+        "Health Organization",
+        "Hospital",
+        "Environmental Group",
+        "Religious Organization",
+        "Youth Organization",
+        "Cultural Organization",
+        "Other",
+      ],
     },
   },
   { timestamps: true }

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import authHook from "../context/AuthContext";
 import { LuLogOut } from "react-icons/lu";
+import { GiShakingHands } from "react-icons/gi";
 
 function VolunteerNavbar() {
   const { userdata, logout } = authHook();
@@ -9,13 +10,16 @@ function VolunteerNavbar() {
   const [showModal, setShowModal] = useState(false);
 
   const handleLogout = () => {
-    logout(); // Assuming your context has a logout function
-    navigate("/"); // Redirect to login page
+    logout();
+    navigate("/");
   };
 
   return (
-    <div className="w-full h-12 flex justify-between items-center bg-white px-6 shadow-md relative">
-      <h1 className="font-semibold text-lg">Website Name</h1>
+    <div className="w-full h-12 flex justify-between items-center bg-white px-6 border-b relative">
+      <section className=" font-semibold flex gap-1 text-secondary_blue_color items-center">
+        <GiShakingHands size={20} />
+        <p className=" font-bold">FindMyVolunteer</p>
+      </section>
       <section className="flex items-center gap-2 cursor-pointer relative">
         <div className="rounded-full h-7 w-7 bg-[#047294]"></div>
         <p className="font-semibold" onClick={() => setShowModal(!showModal)}>

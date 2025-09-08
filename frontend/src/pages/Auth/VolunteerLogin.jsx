@@ -57,14 +57,6 @@ function VolunteerLogin() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-white px-4">
       <div className="w-full max-w-md space-y-6">
-        {/* Logo */}
-        {/* <div className="flex items-center gap-2 justify-center mb-4">
-          <div className="bg-[#003840] p-2 rounded-md">
-            <span className="text-white text-xl font-bold">{"{...}"}</span>
-          </div>
-          <h1 className="text-xl font-semibold text-[#003840]">SoftQA</h1>
-        </div> */}
-
         <div>
           <h2 className="text-2xl font-semibold text-gray-900">
             Welcome Back!
@@ -149,11 +141,6 @@ function VolunteerLogin() {
                 {errors.password.message}
               </p>
             )}
-            {/* <div className="text-right mt-1">
-              <a href="#" className="text-sm text-[#003840] hover:underline">
-                Forgot Password?
-              </a>
-            </div> */}
           </div>
 
           <button
@@ -163,13 +150,6 @@ function VolunteerLogin() {
               loader ? "opacity-80 cursor-not-allowed" : ""
             }`}
           >
-            {/* {loader ? (
-              <div className="flex justify-center items-center h-full">
-                <PropagateLoader color="#ffffff" size={10} />
-              </div>
-            ) : (
-              "Sign In"
-            )} */}
             Sign In
           </button>
         </form>

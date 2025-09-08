@@ -4,6 +4,7 @@ import { RiDashboardFill } from "react-icons/ri";
 import { BsCalendarEventFill } from "react-icons/bs";
 import { IoMdAddCircle } from "react-icons/io";
 import { useNavigate } from "react-router";
+import { GiShakingHands } from "react-icons/gi";
 
 function OrganizationNavbar() {
   const { userdata, logout } = authHook();
@@ -18,12 +19,15 @@ function OrganizationNavbar() {
   return (
     <div className=" flex flex-col h-screen justify-between p-3">
       <div className=" flex flex-col space-y-1">
-        <h1 className=" text-xl font-bold text-[#047294] my-3">SITE NAME</h1>
+        <section className=" mb-2 font-semibold text-secondary_blue_color flex gap-1 items-center">
+          <GiShakingHands size={20} />
+          <p>FindMyVolunteer</p>
+        </section>
         <section
           onClick={() => {
             navigate("/organization");
           }}
-          className=" text-gray-600 text-sm flex gap-1 items-center font-semibold hover:bg-[#047294] hover:text-white p-1.5 rounded"
+          className=" text-gray-600 text-sm flex gap-1 items-center cursor-pointer font-semibold hover:bg-[#047294] hover:text-white p-1.5 rounded"
         >
           <RiDashboardFill /> <p>Dashboard</p>
         </section>
@@ -31,14 +35,14 @@ function OrganizationNavbar() {
           onClick={() => {
             navigate("/organization/events");
           }}
-          className=" text-gray-600 text-sm flex gap-1 items-center font-semibold hover:bg-[#047294] hover:text-white p-1.5 rounded"
+          className=" text-gray-600 text-sm flex gap-1 items-center cursor-pointer font-semibold hover:bg-[#047294] hover:text-white p-1.5 rounded"
         >
           <BsCalendarEventFill />
           <p>Events</p>
         </section>
         <section
           onClick={() => navigate("/organization/events/add")}
-          className=" text-gray-600 text-sm flex gap-1 items-baseline font-semibold hover:bg-[#047294] hover:text-white p-1.5 rounded"
+          className=" text-gray-600 text-sm flex gap-1 items-baseline cursor-pointer font-semibold hover:bg-[#047294] hover:text-white p-1.5 rounded"
         >
           <IoMdAddCircle />
           <p>Add events</p>

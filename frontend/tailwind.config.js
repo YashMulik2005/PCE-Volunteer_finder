@@ -19,6 +19,11 @@ export default {
         light_blue: "#e1f1ff",
         shadow: "#f1f1f1",
         off_white: "#fafcfe",
+
+        primary_blue_color: "#45849b",
+        secondary_blue_color: "#047294",
+        primary_white_color: "#fafafa",
+        secondary_white_color: "#f6f6f6",
       },
     },
   },
