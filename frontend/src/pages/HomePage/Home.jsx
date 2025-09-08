@@ -10,6 +10,7 @@ import homeVideo from "../../assets/homePageVideo.mp4";
 import { FaBuildingCircleArrowRight } from "react-icons/fa6";
 import Footer from "../../components/Footer";
 import { useNavigate } from "react-router";
+import section3Img from "../../assets/section3Img.png";
 
 function Home() {
   const navigate = useNavigate();
@@ -168,14 +169,35 @@ function Home() {
         </div>
       </div>
 
-      <div className=" flex flex-col items-center justify-center gap-2 p-5 h-72">
-        <h2 className="text-2xl font-bold text-[#047294]">
-          Join Our Community
-        </h2>
-        <p className=" text-gray-600 font-semibold">
-          Be a part of a growing network of volunteers and organizations working
-          together for a better tomorrow.
-        </p>
+      <div className=" flex items-center justify-center gap-2 w-full p-10">
+        <div className=" w-1/2 flex justify-center items-center">
+          <img src={section3Img} className=" w-96 h-96 rounded-lg" />
+        </div>
+        <div className="flex flex-col justify-start w-1/2 gap-2">
+          <h2 className="text-2xl font-bold text-[#047294] text-center">
+            Join Our Community
+          </h2>
+          <p className="text-gray-600 font-semibold">
+            Be a part of a growing network of volunteers and organizations
+            working together for a better tomorrow.
+          </p>
+          <p className="text-gray-600 font-semibold">
+            Connect with like-minded individuals passionate about creating
+            positive change.
+          </p>
+          <p className="text-gray-600 font-semibold">
+            Gain access to exclusive events, workshops, and volunteering
+            opportunities.
+          </p>
+          <p className="text-gray-600 font-semibold">
+            Share your skills, learn from others, and make a tangible impact in
+            your community.
+          </p>
+          <p className="text-gray-600 font-semibold">
+            Together, we can build a stronger, more supportive, and sustainable
+            society.
+          </p>
+        </div>
       </div>
       <Footer />
     </div>
