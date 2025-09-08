@@ -41,7 +41,7 @@ function AddEvent() {
         return;
       }
 
-      const apiKey = "95902c715dc643b0889465bcf24d0775";
+      const apiKey = import.meta.env.VITE_LOCATION_KEY;
       const res = await axios.get(
         `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(
           fullAddress
