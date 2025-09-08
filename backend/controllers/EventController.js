@@ -44,7 +44,9 @@ const addEvent = async (req, res) => {
 
 const getEvents = async (req, res) => {
   try {
-    const events = await Event.find().populate("organization");
+    const events = await Event.find()
+      .populate("organization")
+      .sort({ createdAt: -1 });
     res.status(200).json({
       status: true,
       data: events,
@@ -79,9 +81,9 @@ const getEventById = async (req, res) => {
 const getEventsByOrganizationId = async (req, res) => {
   try {
     const orgId = req.params.organizationId;
-    const events = await Event.find({ organization: orgId }).populate(
-      "organization"
-    );
+    const events = await Event.find({ organization: orgId })
+      .populate("organization")
+      .sort({ createdAt: -1 });
     res.status(200).json({ status: true, data: events });
   } catch (err) {
     res.status(500).json({

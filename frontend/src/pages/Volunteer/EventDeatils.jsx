@@ -10,12 +10,15 @@ import { ImOffice } from "react-icons/im";
 import Footer from "../../components/Footer";
 import authHook from "../../context/AuthContext";
 import toast from "react-hot-toast";
+import EventDetailsSkeleton from "../../skeleton/EventDetailsSkeleton";
+import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
 
 function EventDeatils() {
   const modalRef = useRef(null);
   const { id } = useParams();
   const [data, setdata] = useState();
   const { token } = authHook();
+  const [loader, setloader] = useState(false);
 
   const {
     register,
@@ -49,14 +52,22 @@ function EventDeatils() {
   };
 
   const getData = async () => {
+    setloader(true);
     const res = await axios.get(
       `${import.meta.env.VITE_BACKEND_URL}events/${id}`
     );
     const result = res.data;
-    console.log(result?.data);
+    // console.log(result?.data);
 
     setdata(result?.data);
+    setloader(false);
   };
+
+  const mapModalRef = useRef(null);
+
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+  });
 
   useEffect(() => {
     getData();
@@ -68,131 +79,143 @@ function EventDeatils() {
         <VolunteerNavbar />
       </div>
 
-      <div className="w-full flex-grow overflow-y-auto flex flex-col items-center bg-[#f6f6f6]">
-        <div className=" px-3 text-xs sm:text-sm sm:px-24 w-full mt-5">
-          <div className="bg-white bg-[radial-gradient(circle_at_top_left,_#e8f4f8,_#ffffff)] rounded-md flex flex-col sm:flex-row gap-2 p-4 justify-between sm:items-center">
-            <div className="flex gap-4 items-center">
-              <div className="sm:w-14 sm:h-14 w-10 h-10">
-                <div className="rounded-full h-full w-full bg-[#047294] flex justify-center items-center">
-                  <div className="text-[15px] sm:text-[25px] text-white">
-                    <ImOffice />
+      {loader ? (
+        <EventDetailsSkeleton />
+      ) : (
+        <div className="w-full flex-grow overflow-y-auto flex flex-col items-center bg-[#f6f6f6]">
+          <div className=" px-3 text-xs sm:text-sm sm:px-24 w-full mt-5">
+            <div className="bg-white bg-[radial-gradient(circle_at_top_left,_#e8f4f8,_#ffffff)] rounded-md flex flex-col sm:flex-row gap-2 p-4 justify-between sm:items-center">
+              <div className="flex gap-4 items-center">
+                <div className="sm:w-14 sm:h-14 w-10 h-10">
+                  <div className="rounded-full h-full w-full bg-[#047294] flex justify-center items-center">
+                    <div className="text-[15px] sm:text-[25px] text-white">
+                      <ImOffice />
+                    </div>
                   </div>
                 </div>
+                <div>
+                  <h1 className="text-2xl font-bold text-[#047294]">
+                    {data?.organization?.org_name}
+                  </h1>
+                  <section className="flex gap-3">
+                    <p className="text-gray-600">
+                      <span className="text-[#45849b] font-bold">Mail:</span>{" "}
+                      {data?.organization?.mail}
+                    </p>
+                    <p className="text-gray-600">
+                      <span className="text-[#45849b] font-bold">Mobile:</span>{" "}
+                      {data?.organization?.mobile_no}
+                    </p>
+                  </section>
+                </div>
+              </div>
+
+              <button
+                onClick={() => modalRef.current.showModal()}
+                className="bg-[#047294] px-4 w-20  py-2 h-8 flex items-center justify-center text-sm font-bold text-white rounded"
+              >
+                Apply
+              </button>
+            </div>
+          </div>
+
+          <div className="bg-white  w-full flex flex-col sm:flex-row p-7 rounded gap-6 mt-5">
+            <div className=" w-full sm:w-[70%] flex flex-col gap-4 border-b sm:border-b-0 pb-3 sm:pb-0 ">
+              <div>
+                <h1 className="text-lg font-bold">Title</h1>
+                <p className="text-gray-600 mt-1">{data?.title}</p>
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-[#047294]">
-                  {data?.organization?.org_name}
-                </h1>
-                <section className="flex gap-3">
-                  <p className="text-gray-600">
-                    <span className="text-[#45849b] font-bold">Mail:</span>{" "}
-                    {data?.organization?.mail}
-                  </p>
-                  <p className="text-gray-600">
-                    <span className="text-[#45849b] font-bold">Mobile:</span>{" "}
-                    {data?.organization?.mobile_no}
-                  </p>
-                </section>
+                <h1 className="text-lg font-bold">Description</h1>
+                <p className="text-gray-600 mt-1">{data?.description}</p>
+              </div>
+              <div>
+                <h1 className="text-lg font-bold">Type</h1>
+                <p className="text-gray-600 mt-1">{data?.type}</p>
+              </div>
+              <div>
+                <h1 className="text-lg font-bold">Event Date</h1>
+                <p className="text-gray-600 mt-1">
+                  {moment(data?.eventDate).format("MMMM Do YYYY")}
+                </p>
+              </div>
+              <div>
+                <h1 className="text-lg font-bold">Event Time</h1>
+                <p className="bg-gray-100 inline rounded-3xl mt-1 px-4 text-sm font-semibold py-1 text-[#047294]">
+                  {data?.eventTime}
+                </p>
+              </div>
+              <div>
+                <h1 className="text-lg font-bold">Registration Deadline</h1>
+                <p className="text-gray-600 mt-1">
+                  {moment(data?.registrationDeadline).format("MMMM Do YYYY")}
+                </p>
+              </div>
+              <div>
+                <h1 className="text-lg font-bold">Duration</h1>
+                <p className="bg-gray-100 inline rounded-3xl px-4 text-sm font-semibold py-1 text-[#047294]">
+                  {data?.duration}
+                </p>
+              </div>
+              <div>
+                <h1 className="text-lg font-bold">Volunteers Required</h1>
+                <p className="text-gray-600 mt-1">{data?.volunteersRequired}</p>
               </div>
             </div>
 
-            <button
-              onClick={() => modalRef.current.showModal()}
-              className="bg-[#047294] px-4 w-20  py-2 h-8 flex items-center justify-center text-sm font-bold text-white rounded"
-            >
-              Apply
-            </button>
-          </div>
-        </div>
-
-        <div className="bg-white  w-full flex flex-col sm:flex-row p-7 rounded gap-6 mt-5">
-          <div className=" w-full sm:w-[70%] flex flex-col gap-4 border-b sm:border-b-0 pb-3 sm:pb-0 ">
-            <div>
-              <h1 className="text-lg font-bold">Title</h1>
-              <p className="text-gray-600 mt-1">{data?.title}</p>
-            </div>
-            <div>
-              <h1 className="text-lg font-bold">Description</h1>
-              <p className="text-gray-600 mt-1">{data?.description}</p>
-            </div>
-            <div>
-              <h1 className="text-lg font-bold">Type</h1>
-              <p className="text-gray-600 mt-1">{data?.type}</p>
-            </div>
-            <div>
-              <h1 className="text-lg font-bold">Event Date</h1>
-              <p className="text-gray-600 mt-1">
-                {moment(data?.eventDate).format("MMMM Do YYYY")}
-              </p>
-            </div>
-            <div>
-              <h1 className="text-lg font-bold">Event Time</h1>
-              <p className="bg-gray-100 inline rounded-3xl mt-1 px-4 text-sm font-semibold py-1 text-[#047294]">
-                {data?.eventTime}
-              </p>
-            </div>
-            <div>
-              <h1 className="text-lg font-bold">Registration Deadline</h1>
-              <p className="text-gray-600 mt-1">
-                {moment(data?.registrationDeadline).format("MMMM Do YYYY")}
-              </p>
-            </div>
-            <div>
-              <h1 className="text-lg font-bold">Duration</h1>
-              <p className="bg-gray-100 inline rounded-3xl px-4 text-sm font-semibold py-1 text-[#047294]">
-                {data?.duration}
-              </p>
-            </div>
-            <div>
-              <h1 className="text-lg font-bold">Volunteers Required</h1>
-              <p className="text-gray-600 mt-1">{data?.volunteersRequired}</p>
+            <div className=" w-full  sm:w-[30%] sm:border-l-[1px] border-gray-300 sm:p-3">
+              <section className="pb-4 border-b-[1px] border-gray-300">
+                <h1 className="font-bold">Address :</h1>
+                <p className="text-gray-600">{data?.location?.address}</p>
+                <p className="text-gray-600">
+                  <span className="font-bold text-[#45849b] text-sm">
+                    City:
+                  </span>{" "}
+                  {data?.location?.city}
+                </p>
+                <p className="text-gray-600">
+                  <span className="font-bold text-[#45849b]">State:</span>{" "}
+                  {data?.location?.state}
+                </p>
+                <p className="text-gray-600">
+                  <span className="font-bold text-[#45849b]">Pincode:</span>{" "}
+                  {data?.location?.pincode}
+                </p>
+                <button
+                  onClick={() => mapModalRef.current.showModal()}
+                  className=" my-2 bg-[radial-gradient(circle_at_center,_#04687f,_#035466)] hover:brightness-110 capitalize font-semibold text-white px-5 py-2 rounded text-xs transition-all duration-200 shadow-lg hover:shadow-xl"
+                >
+                  get map
+                </button>
+              </section>
+              <section className="my-2 pb-4 border-b-[1px] border-gray-300">
+                <h1 className="font-bold mb-2">Contact :</h1>
+                <p className="text-gray-600">
+                  <span className="font-bold text-[#45849b]">Name:</span>{" "}
+                  {data?.contact?.name}
+                </p>
+                <p className="text-gray-600">
+                  <span className="font-bold text-[#45849b]">Email:</span>{" "}
+                  {data?.contact?.email}
+                </p>
+                <p className="text-gray-600">
+                  <span className="font-bold text-[#45849b]">Phone:</span>{" "}
+                  {data?.contact?.phone}
+                </p>
+              </section>
+              <section className="my-2">
+                <h1 className="font-bold mb-2">Posted On :</h1>
+                <p className="bg-gray-100 inline rounded-3xl px-4 text-sm font-semibold py-1 text-[#047294]">
+                  {moment(data?.createdAt).format("MMMM Do YYYY")}
+                </p>
+              </section>
             </div>
           </div>
-
-          <div className=" w-full  sm:w-[30%] sm:border-l-[1px] border-gray-300 sm:p-3">
-            <section className="pb-4 border-b-[1px] border-gray-300">
-              <h1 className="font-bold">Address :</h1>
-              <p className="text-gray-600">{data?.location?.address}</p>
-              <p className="text-gray-600">
-                <span className="font-bold text-[#45849b] text-sm">City:</span>{" "}
-                {data?.location?.city}
-              </p>
-              <p className="text-gray-600">
-                <span className="font-bold text-[#45849b]">State:</span>{" "}
-                {data?.location?.state}
-              </p>
-              <p className="text-gray-600">
-                <span className="font-bold text-[#45849b]">Pincode:</span>{" "}
-                {data?.location?.pincode}
-              </p>
-            </section>
-            <section className="my-2 pb-4 border-b-[1px] border-gray-300">
-              <h1 className="font-bold mb-2">Contact :</h1>
-              <p className="text-gray-600">
-                <span className="font-bold text-[#45849b]">Name:</span>{" "}
-                {data?.contact?.name}
-              </p>
-              <p className="text-gray-600">
-                <span className="font-bold text-[#45849b]">Email:</span>{" "}
-                {data?.contact?.email}
-              </p>
-              <p className="text-gray-600">
-                <span className="font-bold text-[#45849b]">Phone:</span>{" "}
-                {data?.contact?.phone}
-              </p>
-            </section>
-            <section className="my-2">
-              <h1 className="font-bold mb-2">Posted On :</h1>
-              <p className="bg-gray-100 inline rounded-3xl px-4 text-sm font-semibold py-1 text-[#047294]">
-                {moment(data?.createdAt).format("MMMM Do YYYY")}
-              </p>
-            </section>
+          <div className=" w-full">
+            <Footer />
           </div>
         </div>
-        <div className=" w-full">
-          <Footer />
-        </div>
-      </div>
+      )}
 
       <dialog id="my_modal_3" className="modal" ref={modalRef}>
         <div className="modal-box">
@@ -319,6 +342,50 @@ function EventDeatils() {
               </button>
             </div>
           </form>
+        </div>
+      </dialog>
+
+      <dialog id="map_modal" className="modal" ref={mapModalRef}>
+        <div className="modal-box w-11/12 max-w-3xl">
+          <button
+            type="button"
+            onClick={() => mapModalRef.current.close()}
+            className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+          >
+            ✕
+          </button>
+          <h3 className="font-bold text-lg mb-3">Event Location</h3>
+
+          {isLoaded ? (
+            <GoogleMap
+              mapContainerStyle={{ width: "100%", height: "400px" }}
+              center={{
+                lat: parseFloat(data?.location?.coordinates?.lat) || 0,
+                lng: parseFloat(data?.location?.coordinates?.lng) || 0,
+              }}
+              zoom={15}
+            >
+              <Marker
+                position={{
+                  lat: parseFloat(data?.location?.coordinates?.lat) || 0,
+                  lng: parseFloat(data?.location?.coordinates?.lng) || 0,
+                }}
+              />
+            </GoogleMap>
+          ) : (
+            <p>Loading Map...</p>
+          )}
+
+          <div className="mt-3">
+            <p>
+              <span className="font-bold">Latitude:</span>{" "}
+              {parseFloat(data?.location?.coordinates?.lat)}
+            </p>
+            <p>
+              <span className="font-bold">Longitude:</span>{" "}
+              {parseFloat(data?.location?.coordinates?.lng)}
+            </p>
+          </div>
         </div>
       </dialog>
     </div>
